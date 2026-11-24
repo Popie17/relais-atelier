@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex"><title>L'Atelier HenClo</title>
+<style>
+body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f6f1e7;font-family:system-ui,sans-serif;color:#3a3a32;text-align:center;padding:20px;box-sizing:border-box}
+main{max-width:360px;width:100%}h1{font-size:20px;font-weight:600;margin:0 0 6px}p{margin:0 0 22px;color:#6b685d;font-size:15px}
+a,button{display:block;width:100%;box-sizing:border-box;padding:18px;border:0;border-radius:14px;background:#7f9573;color:#fff;font-size:18px;font-weight:600;text-decoration:none;font-family:inherit}
+small{display:block;margin-top:18px;color:#8a867a}
+</style></head><body><main>
+<h1 id="t">L'Atelier HenClo</h1><p id="d"></p><div id="b"></div><small id="s"></small>
+<script>
+(function(){
+  var raw='';try{raw=decodeURIComponent(location.hash.slice(1));}catch(e){}
+  var t=document.getElementById('t'),d=document.getElementById('d'),b=document.getElementById('b'),s=document.getElementById('s');
+  if(/^tel:\+?[0-9]{6,15}$/.test(raw)){
+    t.textContent='Appeler';d.textContent=raw.slice(4);
+    var a=document.createElement('a');a.href=raw;a.textContent='Lancer l\'appel';b.appendChild(a);
+  }else if(/^sms:\+?[0-9]{6,15}([?&;]body=[\s\S]*)?$/.test(raw)){
+    t.textContent='Envoyer un SMS';d.textContent='Le message est prêt, tu pourras le relire avant d\'envoyer.';
+    var a2=document.createElement('a');a2.href=raw;a2.textContent='Ouvrir Messages';b.appendChild(a2);
+  }else if(/^share:/.test(raw)){
+    var txt=raw.slice(6);t.textContent='Partager le message';d.textContent='';
+    var bt=document.createElement('button');bt.textContent='Partager';
+    bt.onclick=function(){
+      if(navigator.share){navigator.share({text:txt}).catch(function(){});}
+      else if(navigator.clipboard){navigator.clipboard.writeText(txt).then(function(){s.textContent='Message copié.';});}
+    };b.appendChild(bt);
+  }else{d.textContent='Lien non reconnu. Reviens dans l\'application et réessaie.';}
+  s.textContent=s.textContent||'Tu peux fermer cet onglet ensuite.';
+})();
+</script></main></body></html>
